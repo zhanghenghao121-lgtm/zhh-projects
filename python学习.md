@@ -99,3 +99,26 @@ for i in result:
 
 ```
 ### 模拟浏览器访问--cookie
+使用session
+request = requests.session()
+
+# day3 爬去梨视频
+防盗链中，Refer：就是溯源链接，需要补上
+```
+url = "https://www.pearvideo.com/video_1804335"
+headers = {
+    "User-Agent": "Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Mobile Safari/537.36",
+    "Referer": url
+}
+contId = url.split("_")[1]
+videoStatusURL = f"https://www.pearvideo.com/videoStatus.jsp?contId={contId}&mrd=0.24300385243810207"
+resp = requests.get(videoStatusURL, headers=headers)
+resp_json = resp.json()
+videoURL = resp_json["videoInfo"]["videos"]["srcUrl"]
+systemTime = resp_json["systemTime"]
+vURL = videoURL.replace(systemTime, f"cont-{contId}")
+with open("video.mp4", "wb") as f:
+    video_resp = requests.get(vURL, headers=headers)
+    f.write(video_resp.content)
+print("视频下载完成")# 下载地址举例
+```
