@@ -1,5 +1,6 @@
 # day1
 学习了re正则匹配，先用re.compile(正则表达式)，再finditem（要寻找的内容），通过group分组获取
+xpath需要etree库，from lxml import etree
 ```
 import requests
 import re
@@ -122,3 +123,61 @@ with open("video.mp4", "wb") as f:
     f.write(video_resp.content)
 print("视频下载完成")# 下载地址举例
 ```
+# day4
+使用代理 proxy
+```
+proxy = {
+    "http": "http://"
+    "https: "https://"
+}
+```
+
+```
+import requests
+
+def get_ip():
+    urlip = "http://httpbin.org/ip"
+    resp = requests.get(urlip)
+    ips = resp.json()['data']['ip']
+    for ip in ips:
+        yield ip
+
+def scrapt():
+    url = "https://www.example.com"
+
+    while True:
+        try:
+            proxys = {
+                    "http": f"http://{next(get_ip())}",
+                    "https": f"http://{next(get_ip())}"
+                }
+            resp = requests.get(url, proxies=proxys)
+            resp.encoding = 'utf-8'
+            return resp.text
+        except :
+            print("更换ip中")
+
+if __name__ == "__main__":
+    for i in range(10):
+        scrapt()
+
+```
+# day4
+### 多线程
+进程是资源单位，至少有一个线程
+线程是执行单位
+```
+from threading import Thread
+
+class MyThread(Thread):
+    def run(self):
+        for i in range(100):
+            print(f"线程 {self.name} 输出: {i}")
+
+if __name__ == "__main__":
+    t = MyThread()
+    t.start()
+    for i in range(100):
+        print(f"主线程 输出: {i}")
+```
+线程池就是一次性开辟多个线程，然后给线程池分配任务
