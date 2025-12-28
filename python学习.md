@@ -180,4 +180,60 @@ if __name__ == "__main__":
     for i in range(100):
         print(f"主线程 输出: {i}")
 ```
-线程池就是一次性开辟多个线程，然后给线程池分配任务
+##### 线程池就是一次性开辟多个线程，然后给线程池分配任务
+
+##### 协程就是当程序遇到IO操作被堵塞的时候，可以选择性的切换到其他任务上
+协程需要使用asyncio库来使用
+await 挂起操作，只能在异步函数中进行使用，异步函数返回的是一个异步对象
+创建异步对象需要asyncio.create_task(异步函数)
+asyncio.wait(多任务列表)
+最后需要asyncio.run(主函数)
+```
+import asyncio
+import time
+
+async def download(url):
+    print("Downloading...")
+    #time.sleep(2) 异步使用同步语句会停止异步
+    await asyncio.sleep(2)
+    print("Download complete.")
+
+async def main():
+    urls = {
+        "https://example.com/file1",
+        "https://example.com/file2",
+        "https://example.com/file3"
+    }
+    tasks = []
+    for u in urls:
+        t = asyncio.create_task(download(u))
+        tasks.append(t)
+    await asyncio.wait(tasks)
+
+if __name__ == "__main__":
+    asyncio.run(main())
+```
+```
+request.get()也是同步操作，需要使用aiohttp
+async def aiodownload(url):
+    name = url.split("/")[-1]
+    async with aiohttp.ClientSession() as session:
+        async with session.get(url) as resp:
+            with open((f"name{i}.jpg" for i in range(3)), "wb") as f:
+                f.write(await resp.read())
+            await resp.text()
+    print("Download complete.") 
+async def main():
+    urls = {
+        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSEUKhGK8UYTUqpbUoVYT9vJOBFnUbhnEZG2L1SKj0oo_qb_dnIUBoQNNpSVA7oc_jAM2GNAO3QjDen1fgtLHegJ8XauC-vTxzytnsohyhI&s=10",
+        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTf7dFGleObRtZDXuLY1ozgF2rZ-C7hTQzJwGYljiM_h1RvFgA669r73HgNDYpAdeNfaJdvt590gm5BDug3EHtTkQoJoG8BVGSdQszsORVs&s=10",
+        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRllzh8jxm-JxUk3xTU1wIqGAEzPlMckvXHWaTpCmhuhHcczQrqSxp1JSpfXrKCz5tZFXvp5b0TNrZ6IjHTEsP3fMMXsE_O_OQoNyONPDR3Ag&s=10"
+    }
+    tasks = []
+    for u in urls:
+        t = asyncio.create_task(aiodownload(u))
+        tasks.append(t)
+    await asyncio.wait(tasks)
+if __name__ == "__main__":
+    asyncio.run(main())
+```
