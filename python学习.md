@@ -242,4 +242,7 @@ if __name__ == "__main__":
 ##### 框架原理
 爬虫组件url--》引擎--〉调度器--》引擎--〉下载器（发送请求）--》引擎--〉爬虫程序解析--》引擎--〉管道（保存数据）
 
-创建项目：scrapy startproject 根目录名
+- 创建项目：scrapy startproject 根目录名
+- 创建爬虫程序：scrapy genspider xiao 4399.com
+- 启动爬虫程序：scrapy crawl 爬虫程序名（xiao）
+- 数据返回到pipline管道进行处理，启动管道（settings里面打开）"game.pipelines.GamePipeline": 300,设置管道的优先级
