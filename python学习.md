@@ -237,3 +237,9 @@ async def main():
 if __name__ == "__main__":
     asyncio.run(main())
 ```
+# day7
+### Scrapy框架
+##### 框架原理
+爬虫组件url--》引擎--〉调度器--》引擎--〉下载器（发送请求）--》引擎--〉爬虫程序解析--》引擎--〉管道（保存数据）
+
+创建项目：scrapy startproject 根目录名
