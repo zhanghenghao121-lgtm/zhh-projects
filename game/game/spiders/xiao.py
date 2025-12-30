@@ -12,5 +12,9 @@ class XiaoSpider(scrapy.Spider):
             name = i.xpath('./a/b/text()').extract_first()
             classify = i.xpath('./em/a/text()').extract_first() 
             date = i.xpath('./em/text()').extract_first()
-            print(name, classify, date)
-            break
+            dic = {
+                "name": name,
+                "classify": classify,
+                "date": date
+            }
+            yield dic
